@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MonsterAR
 {
@@ -8,6 +9,10 @@ namespace MonsterAR
     {
         [SerializeField]
         MonsterState currentState;
+
+        //Hacks
+        [SerializeField]
+        Slider healthBar;
 
 
         enum MonsterState
@@ -17,6 +22,8 @@ namespace MonsterAR
             Tired
         }
 
+
+        public Status Health { get { return health; } }
         Status health;
 
 
@@ -28,16 +35,28 @@ namespace MonsterAR
         void Update()
         {
             _MonsterState_Handler();
-        }
-
-        void FixedUpdate()
-        {
-            _Damage_Handler();
+            healthBar.value = health.Current;
         }
 
         void _Initialize()
         {
             health = new Status(1000, 1000);
+        }
+
+        void _Subscribe_Events()
+        {
+            GameController.OnGameInit += _OnGameInit;
+        }
+
+        void _Unsubscribe_Events()
+        {
+            GameController.OnGameInit -= _OnGameInit;
+        }
+
+        void _OnGameInit()
+        {
+            health.FullRestore();
+            healthBar.value = health.Current;
         }
 
         void _MonsterState_Handler()
@@ -62,6 +81,9 @@ namespace MonsterAR
 
             if (health.Current <= 0 && !GameController.instance.IsGameOver) {
                 GameController.instance.GameOver();
+
+                //Hacks
+                health.FullRestore();
             }
         }
 
@@ -72,17 +94,12 @@ namespace MonsterAR
 
         void _AggressiveState_Handler()
         {
-
+            //shoot and rotate
         }
 
         void _TiredState_Handler()
         {
-
-        }
-
-        void _Damage_Handler()
-        {
-
+            //like idle
         }
     }
 }
