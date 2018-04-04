@@ -1,12 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Vuforia;
 
 namespace MonsterAR
 {
     public class GameUIController : MonoBehaviour, ITrackableEventHandler
     {
+        const string WARNING_TEXT_TEMPLATE = "Game Over in : {0}";
+
+        //Hacks
+        [SerializeField]
+        Timer timer;
+
+        //Hacks
+        [SerializeField]
+        Text lblWarning;
+
         [SerializeField]
         GameObject[] panels;
 
@@ -82,6 +93,7 @@ namespace MonsterAR
             }
             else if (TrackableBehaviour.Status.NOT_FOUND == newStatus) {
                 ShowOnly(ViewPanel.MissingMonster);
+
             }
         }
 
