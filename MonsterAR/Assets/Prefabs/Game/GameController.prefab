@@ -51,3 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acb97c932ee6084b8ee37f73a9c2a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackableEvent: {fileID: 0}
